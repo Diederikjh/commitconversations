@@ -20,7 +20,7 @@ def getMaxIndex():
         return firstResult.insertCounter
 
 
-def _dataStoreHasMessages():
+def dataStoreHasMessages():
     query = db.GqlQuery("SELECT * FROM GitHubCommitComment")
     count = query.count(limit=1);
     if count == 1:
@@ -29,7 +29,7 @@ def _dataStoreHasMessages():
         return False
 
 def getRandomMessage():
-    if not _dataStoreHasMessages():
+    if not dataStoreHasMessages():
         Tasks.startMessageGetTask()
         logging.info("Tasks are empty")
         return None

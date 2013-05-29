@@ -1,13 +1,13 @@
+
+
 $(document).ready(function(){
   
 	addRandomCommentsToMessageNode(3);
-	
 	$("button").click(function(){
 		var m = $('#messages');
 		m.empty();
 		addRandomCommentsToMessageNode(3);
 	});
-
 });
 
 var g_messageDict = {};

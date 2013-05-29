@@ -50,18 +50,40 @@ class ShowOneMessage(webapp.RequestHandler):
         self.response.out.write('</body></html>')
     
 
-class LandingHandler(webapp.RequestHandler):
+def ensureDbNotEmpty(self):
+    if not modelInterrogator.dataStoreHasMessages():
+        startMessageGetTask()
+        
+class ConversationsHandler(webapp.RequestHandler):
+
+
     def get(self):
         template_values = {
             'greeting': 'GitHub Conversations',
             'url': 'https://google.com',
             'url_linktext': 'google',
         }
-        template = JINJA_ENVIRONMENT.get_template('index.html')
+        template = JINJA_ENVIRONMENT.get_template('files/html/conversations.html')
         self.response.write(template.render(template_values))
+        
+        ensureDbNotEmpty()
+            
+class WhatAreYouDoingDevHandler(webapp.RequestHandler):
+    def get(self):
+        template_values = {
+            'greeting': 'GitHub Conversations',
+        }
+        template = JINJA_ENVIRONMENT.get_template('files/html/dev.html')
+        self.response.write(template.render(template_values))
+        
+        if not modelInterrogator.dataStoreHasMessages():
+            startMessageGetTask()
 
 application = webapp.WSGIApplication(
-                                     [('/readAllMessages', ShowMessages), ('/oneMessage', ShowOneMessage), ('/', LandingHandler)],
+                                     [('/readAllMessages', ShowMessages), 
+                                      ('/oneMessage', ShowOneMessage), 
+                                      ('/conversations', ConversationsHandler),
+                                      ('/', WhatAreYouDoingDevHandler)],
                                      debug=True)
 
 def main():

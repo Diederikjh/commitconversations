@@ -8,11 +8,15 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 import json
 import modelInterrogator
 from google.appengine.ext import db
+import logging
 
 class GetOneMessage(webapp.RequestHandler):
     def get(self):
         randomMessage = modelInterrogator.getRandomMessage()
-        self.response.out.write(json.dumps(db.to_dict(randomMessage)))
+        if randomMessage == None:
+            logging.warn("None returned from db")
+        else:
+            self.response.out.write(json.dumps(db.to_dict(randomMessage)))
 
 application = webapp.WSGIApplication(
                                      [('/api/1/getOneMessage', GetOneMessage)],

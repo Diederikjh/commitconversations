@@ -14,6 +14,16 @@ handlers:
   login: admin
 - url: /scripts
   static_dir: scripts
+- url: /styles
+  static_dir: styles
+- url: /css
+  static_dir: bootstrap/css
+- url: /img
+  static_dir: bootstrap/img
+- url: /js
+  static_dir: bootstrap/js
+- url: /styles
+  static_dir: styles
 - url: /api/.*
   script: web_api.py
 - url: /.*

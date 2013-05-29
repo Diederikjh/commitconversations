@@ -8,6 +8,7 @@ from model import GitHubCommitComment
 
 from google.appengine.ext import db
 from modelInterrogator import getMaxIndex
+import logging
 #  Script to return three random commit comments from github
 ## Depends on http://jacquev6.github.com/PyGithub/introduction.html
 # 
@@ -53,17 +54,13 @@ def getMessages():
     githubPassword = data["password"]
     
     g = Github(githubUsername, githubPassword)
+    logging.debug("Logged in to github")
     
     # TODO rather list repos http://developer.github.com/v3/repos/#list-all-repositories with random Id to get Random repos
     words =  open('files/worddata.txt').read().split()
     randomWord = choice(words)
-    #Gets NO repos   
-    #randomWord = "housefalls"
-    #gets empty repo
-    #randomWord = "livers"
-    print(randomWord)
+    logging.debug("random word choice " + randomWord)
     pagedRepos = g.legacy_search_repos(randomWord)
-    
     currentMaxIndex = getMaxIndex()
     
     commentClassList = []
@@ -73,16 +70,18 @@ def getMessages():
         print(repo.full_name)
         pagedCommits = repo.get_commits()
         repoCount = repoCount + 1
+        logging.debug("found repo " + repo.full_name)
         try:  
             for commit in pagedCommits:
                 gitcommit = commit.commit
                 comment = gitcommit.message
                 sha = gitcommit.sha
                 ownerName = repo.owner.name
-                if len(comment.strip) == 0:
+                if len(comment.strip()) == 0:
                     continue
                 s = CommitComment(comment, sha, repo.full_name, ownerName)
                 commitcoment = getExistingComment(sha, repo.full_name, ownerName)
+                logging.debug("\tfound commit comment " + comment)
                 if commitcoment == None:
                     commitcoment = GitHubCommitComment()    
                 # if comment empty - don't save
@@ -93,6 +92,7 @@ def getMessages():
                 commitcoment.url = commit.url
                 commitcoment.insertCounter = currentMaxIndex + commitCount
                 commitcoment.put()
+                logging.debug("\tcommit comment saved")
                 commentClassList.append(s)
                 commitCount += 1
                 if commitCount >= MAX_COMMIT_COUNT:
