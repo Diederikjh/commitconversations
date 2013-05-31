@@ -1,0 +1,13 @@
+{% extends "files/templates/nav-base.html" %}
+
+{% block head %}
+{{ super() }}
+<script src="/scripts/messageGetter.js"></script>
+{% endblock %}
+{% block content %}
+{{ super() }}
+    <button id="refresh_button" class="btn btn-primary btn-large" >New</button>
+    <p>
+    <div class="well">
+    <h2 id="messages"></h2>
+{% endblock %}

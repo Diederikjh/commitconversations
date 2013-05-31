@@ -1,0 +1,24 @@
+{% extends "files/templates/base.html" %}
+
+{% block  pre_content %}
+    {{ super() }}
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container" style="width: auto;">
+             <div class="nav-collapse">
+                   <ul class="nav nav-pills">
+                      {% for nav_item in nav_items %}
+                       <li
+                       {% if nav_item.isActive %}
+                           class="active"
+                       {% endif %}
+                       >
+                          <a href="{{ nav_item.url |e }}" >{{ nav_item.name |e }}</a>
+                       </li>
+                      {% endfor %}
+                   </ul>
+             </div>      
+        </div>
+    </div>
+</div>
+{% endblock %}

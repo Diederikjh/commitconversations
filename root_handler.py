@@ -11,6 +11,7 @@ import jinja2
 import os
 from Tasks import startMessageGetTask, startFixMultipleInsertIndexTask
 from modelInterrogator import getRandomMessage
+import navbar
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -50,13 +51,11 @@ class ShowOneMessage(webapp.RequestHandler):
         self.response.out.write('</body></html>')
     
 
-def ensureDbNotEmpty(self):
+def ensureDbNotEmpty():
     if not modelInterrogator.dataStoreHasMessages():
         startMessageGetTask()
         
 class ConversationsHandler(webapp.RequestHandler):
-
-
     def get(self):
         template_values = {
             'greeting': 'GitHub Conversations',
@@ -67,22 +66,34 @@ class ConversationsHandler(webapp.RequestHandler):
         self.response.write(template.render(template_values))
         
         ensureDbNotEmpty()
+        
+class DevTestHandler(webapp.RequestHandler):
+    def get(self):
+        n = navbar.navbar()
+        n.setNavBarItemActive("Doing now?")
+        template_values = {
+               'nav_items': n.getNavBarItemList()
+        }
+        template = JINJA_ENVIRONMENT.get_template('files/templates/nav-base.html')
+        self.response.write(template.render(template_values))
             
 class WhatAreYouDoingDevHandler(webapp.RequestHandler):
     def get(self):
+        n = navbar.navbar()
+        n.setNavBarItemActive("Doing now?")
         template_values = {
-            'greeting': 'GitHub Conversations',
+               'nav_items': n.getNavBarItemList()
         }
-        template = JINJA_ENVIRONMENT.get_template('files/html/dev.html')
+        template = JINJA_ENVIRONMENT.get_template('files/templates/waydn.html')
         self.response.write(template.render(template_values))
         
-        if not modelInterrogator.dataStoreHasMessages():
-            startMessageGetTask()
+        ensureDbNotEmpty()
 
 application = webapp.WSGIApplication(
                                      [('/readAllMessages', ShowMessages), 
                                       ('/oneMessage', ShowOneMessage), 
                                       ('/conversations', ConversationsHandler),
+                                      ('/devtest', DevTestHandler),
                                       ('/', WhatAreYouDoingDevHandler)],
                                      debug=True)
 

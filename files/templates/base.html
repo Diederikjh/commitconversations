@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  {% block head %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="js/bootstrap.min.js"></script>
+  {% endblock %}
+</head>
+  <body>
+  <div class="container">
+    <h1>Commit Conversations</h1>
+    <p class="lead">Random commit comments, hopefully amusing</p>
+    {% block pre_content %}{% endblock %}
+    {% block content %}{% endblock %}
+    <footer>
+        {% block footer %}
+        Footer
+        {% endblock %}
+    </footer>
+  </div> 
+  </body>
+</html>
