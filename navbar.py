@@ -15,8 +15,6 @@ class navItem():
     isActive = False
     url = ""
     
-    
-
 class navbar():
     '''
     classdocs
@@ -27,7 +25,7 @@ class navbar():
         Constructor
         '''
         self.navItems = [navItem("Doing now?", "/WAYDN"), 
-                        navItem("Conversation", "/Conversation"),
+                        navItem("Conversation", "/conversation"),
                         navItem("Stream", "/Stream"),
                         navItem("About", "/About")]
         
@@ -53,3 +51,6 @@ class navbar():
         self.validateList()
         return self.navItems
     
+    def appendTemplateInfo(self, templateParameters):
+        templateParameters['nav_items'] = self.getNavBarItemList()
+

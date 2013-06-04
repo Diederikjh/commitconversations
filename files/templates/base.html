@@ -14,11 +14,16 @@
     <p class="lead">Random commit comments, hopefully amusing</p>
     {% block pre_content %}{% endblock %}
     {% block content %}{% endblock %}
-    <footer>
+    <div id="footer">
         {% block footer %}
-        Footer
+        <div class="container">
+           <p class="muted credit">
+           Brought to you by
+           <a href="https://twitter.com/Diederik_za">Diederik</a>
+           </p>
+        </div>
         {% endblock %}
-    </footer>
+    </div>
   </div> 
   </body>
 </html>

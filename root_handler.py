@@ -57,23 +57,20 @@ def ensureDbNotEmpty():
         
 class ConversationsHandler(webapp.RequestHandler):
     def get(self):
-        template_values = {
-            'greeting': 'GitHub Conversations',
-            'url': 'https://google.com',
-            'url_linktext': 'google',
-        }
-        template = JINJA_ENVIRONMENT.get_template('files/html/conversations.html')
+        n = navbar.navbar()
+        n.setNavBarItemActive("Conversation")
+        template_values = { }
+        n.appendTemplateInfo(template_values)
+        template = JINJA_ENVIRONMENT.get_template('files/templates/conversation.html')
         self.response.write(template.render(template_values))
-        
         ensureDbNotEmpty()
         
 class DevTestHandler(webapp.RequestHandler):
     def get(self):
         n = navbar.navbar()
         n.setNavBarItemActive("Doing now?")
-        template_values = {
-               'nav_items': n.getNavBarItemList()
-        }
+        template_values = { }
+        n.appendTemplateInfo(template_values)
         template = JINJA_ENVIRONMENT.get_template('files/templates/nav-base.html')
         self.response.write(template.render(template_values))
             
@@ -81,20 +78,25 @@ class WhatAreYouDoingDevHandler(webapp.RequestHandler):
     def get(self):
         n = navbar.navbar()
         n.setNavBarItemActive("Doing now?")
-        template_values = {
-               'nav_items': n.getNavBarItemList()
-        }
+        template_values = { }
+        n.appendTemplateInfo(template_values)
         template = JINJA_ENVIRONMENT.get_template('files/templates/waydn.html')
         self.response.write(template.render(template_values))
         
         ensureDbNotEmpty()
 
+class RedirectToDefaultNavItemHandeler(webapp.RequestHandler):
+    def get(self):
+        self.redirect("/WAYDN")
+
 application = webapp.WSGIApplication(
                                      [('/readAllMessages', ShowMessages), 
                                       ('/oneMessage', ShowOneMessage), 
-                                      ('/conversations', ConversationsHandler),
+                                      ('/conversation', ConversationsHandler),
                                       ('/devtest', DevTestHandler),
-                                      ('/', WhatAreYouDoingDevHandler)],
+                                      ('/', RedirectToDefaultNavItemHandeler),
+                                      ('/WAYDN',WhatAreYouDoingDevHandler) 
+                                      ],
                                      debug=True)
 
 def main():

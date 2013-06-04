@@ -1,0 +1,27 @@
+{% extends "files/templates/refreshbutton-base.html" %}
+
+{% block head %}
+{{ super() }}
+<script src="/scripts/messageAdder.js"></script>
+{% endblock %}
+{% block content %}
+{{ super() }}
+      <blockquote>
+            <p>Hey, developer, what did you do yesterday?</p>
+      </blockquote>
+    <div class="well text-right">
+        <h2 id="message1"></h2>
+    </div>
+      <blockquote>
+           <p>And then after that?</p>
+      </blockquote>
+    <div class="well text-right">
+        <h2 id="message2"></h2>
+    </div>
+      <blockquote>
+           <p>... and today so far?</p>
+      </blockquote>
+    <div class="well text-right">
+        <h2 id="message3"></h2>
+    </div>
+{% endblock %}
