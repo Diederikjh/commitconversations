@@ -50,3 +50,8 @@ def getRandomMessage():
     return randomMessages
     
     
+def getMessageByInsertId(insertId):
+    randomMessageQuery = MessagesByIndexQuery(insertId)
+    return randomMessageQuery.get()
+
+

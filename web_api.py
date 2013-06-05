@@ -17,9 +17,21 @@ class GetOneMessage(webapp.RequestHandler):
             logging.warn("None returned from db")
         else:
             self.response.out.write(json.dumps(db.to_dict(randomMessage)))
+            
+class GetOneMessageById(webapp.RequestHandler):
+    def get(self):
+        insertId = self.request.get('id')
+        insertId = int(insertId)
+        randomMessage = modelInterrogator.getMessageByInsertId(insertId)
+        if randomMessage == None:
+            logging.error("None returned from db")
+        else:
+            self.response.out.write(json.dumps(db.to_dict(randomMessage)))
 
 application = webapp.WSGIApplication(
-                                     [('/api/1/getOneMessage', GetOneMessage)],
+                                     [('/api/1/getOneMessage', GetOneMessage),
+                                      ('/api/1/getOneMessageById', GetOneMessageById)
+                                      ],
                                      debug=True)
 
 def main():
