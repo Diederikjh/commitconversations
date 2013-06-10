@@ -21,8 +21,13 @@ class GetOneMessage(webapp.RequestHandler):
 class GetOneMessageById(webapp.RequestHandler):
     def get(self):
         insertId = self.request.get('id')
-        insertId = int(insertId)
-        randomMessage = modelInterrogator.getMessageByInsertId(insertId)
+        try:
+            insertId = int(insertId)
+            randomMessage = modelInterrogator.getMessageByInsertId(insertId)
+        except ValueError:
+            logging.error("not a number '" + insertId + "' passed to API for insert id")
+            randomMessage = modelInterrogator.getRandomMessage()
+            
         if randomMessage == None:
             logging.error("None returned from db")
         else:

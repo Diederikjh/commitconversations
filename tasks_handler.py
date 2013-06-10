@@ -20,7 +20,7 @@ class RemoveDuplicateIndexMessagesTask(webapp.RequestHandler):
         logging.getLogger().setLevel(logging.INFO)
         duplicateIndex = self.request.get('duplicateIndex')
         duplicateIndex = int(duplicateIndex)
-        logging.info("duplicate index G is " + str(duplicateIndex))        
+        logging.info("duplicate index is " + str(duplicateIndex))        
         messages = dataAccess.MessagesByIndexQuery(duplicateIndex)
         newIndex = modelInterrogator.getMaxIndex()
         newIndex += 1
@@ -32,7 +32,7 @@ class RemoveDuplicateIndexMessagesTask(webapp.RequestHandler):
             if i != 0:
                 logging.info('Updating message with new index ' + str(newIndex))
                 message.put()
-            newIndex += 1
+                newIndex += 1
             i += 1
         
 application = webapp.WSGIApplication(

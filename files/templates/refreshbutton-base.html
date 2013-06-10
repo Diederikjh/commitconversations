@@ -1,7 +1,12 @@
 {% extends "files/templates/nav-base.html" %}
 {% block content %}
 {{ super() }}
-    <p>
-      <button id="refresh_button" class="btn btn-primary" type="button" >Refresh</button>
-    </p>
+<p>
+    <div class="row">
+      <div class="span10 offset0">
+        <button id="refresh_button" class="btn btn-primary" type="button" >Refresh</button>
+        <button id="share_button" rel="popover" class="btn btn-primary" type="button" >Share</button>
+      </div>
+    </div>
+</p>
 {% endblock %}

@@ -28,6 +28,15 @@ def dataStoreHasMessages():
     else:
         return False
 
+
+def getMessageByIDCheckingForDuplicates(randomIndex):
+    randomMessageQuery = MessagesByIndexQuery(randomIndex)
+    messageCount = randomMessageQuery.count(limit=5)
+    if messageCount > 1:
+        logging.info("Starting duplicate insert counter task")
+        Tasks.startFixMultipleInsertIndexTask(randomIndex)
+    return randomMessageQuery
+
 def getRandomMessage():
     if not dataStoreHasMessages():
         Tasks.startMessageGetTask()
@@ -37,10 +46,7 @@ def getRandomMessage():
     while continueWithLoop:
         maxIndex = getMaxIndex()
         randomIndex = random.randint(0, maxIndex)
-        randomMessageQuery = MessagesByIndexQuery(randomIndex)
-        messageCount = randomMessageQuery.count(limit=5)
-        if messageCount > 1:
-            Tasks.startFixMultipleInsertIndexTask(randomIndex);
+        randomMessageQuery = getMessageByIDCheckingForDuplicates(randomIndex)
             
         randomMessages = randomMessageQuery.get()
         if randomMessages != None:
@@ -51,7 +57,11 @@ def getRandomMessage():
     
     
 def getMessageByInsertId(insertId):
-    randomMessageQuery = MessagesByIndexQuery(insertId)
-    return randomMessageQuery.get()
+    messageByIdQuery = getMessageByIDCheckingForDuplicates(insertId)
+    message = messageByIdQuery.get()
+    if message == None:
+        logging.warning("Message with ID " + str(insertId) + " not found")
+        return getRandomMessage()
+    return message
 
 
