@@ -15,6 +15,10 @@ class AddCommentsTask(webapp.RequestHandler):
     def post(self):
         message_getter.getMessages()
         
+    # post for tasks, get for cron job
+    def get(self):
+        message_getter.getMessages()
+        
 class RemoveDuplicateIndexMessagesTask(webapp.RequestHandler):
     def post(self):
         logging.getLogger().setLevel(logging.INFO)

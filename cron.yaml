@@ -1,0 +1,4 @@
+cron:
+- description: add messages task
+  url: /tasks/addComments
+  schedule: every 5 mins

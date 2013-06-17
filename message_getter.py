@@ -60,18 +60,21 @@ def getMessages():
     words =  open('files/worddata.txt').read().split()
     randomWord = choice(words)
     logging.debug("random word choice " + randomWord)
+    # remember: max 5000 requests per hour http://developer.github.com/v3/#rate-limiting
+    # Request ++
     pagedRepos = g.legacy_search_repos(randomWord)
     currentMaxIndex = getMaxIndex()
     
     commentClassList = []
     repoCount = 0
     commitCount = 0
+    # Request ++ per repo
     for repo in pagedRepos:
-        print(repo.full_name)
         pagedCommits = repo.get_commits()
         repoCount = repoCount + 1
         logging.debug("found repo " + repo.full_name)
-        try:  
+        try:
+            # Request ++ per commit  
             for commit in pagedCommits:
                 gitcommit = commit.commit
                 comment = gitcommit.message
