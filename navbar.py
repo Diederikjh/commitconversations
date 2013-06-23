@@ -24,10 +24,10 @@ class navbar():
         '''
         Constructor
         '''
-        self.navItems = [navItem("Doing now?", "/WAYDN"), 
-                        navItem("Conversation", "/conversation"),
-                        navItem("Stream", "/Stream"),
-                        navItem("About", "/About")]
+        self.navItems = [navItem("Conversation", "/conversation"),
+                         navItem("Single", "/WAYDN")
+                         , navItem("About", "/About")
+                         ]
         
     def setNavBarItemActive(self, navName):
         setItemActive = False

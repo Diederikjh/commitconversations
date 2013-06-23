@@ -77,25 +77,37 @@ class DevTestHandler(webapp.RequestHandler):
 class WhatAreYouDoingDevHandler(webapp.RequestHandler):
     def get(self):
         n = navbar.navbar()
-        n.setNavBarItemActive("Doing now?")
+        n.setNavBarItemActive("Single")
         template_values = { }
         n.appendTemplateInfo(template_values)
         template = JINJA_ENVIRONMENT.get_template('files/templates/waydn.html')
         self.response.write(template.render(template_values))
         
         ensureDbNotEmpty()
+        
+class AboutHandler(webapp.RequestHandler):
+    def get(self):
+        n = navbar.navbar()
+        n.setNavBarItemActive("About")
+        template_values = { }
+        n.appendTemplateInfo(template_values)
+        template = JINJA_ENVIRONMENT.get_template('files/templates/about.html')
+        self.response.write(template.render(template_values))
+        
+        ensureDbNotEmpty()
 
 class RedirectToDefaultNavItemHandeler(webapp.RequestHandler):
     def get(self):
-        self.redirect("/WAYDN")
+        self.redirect("/conversation")
 
-application = webapp.WSGIApplication(
-                                     [('/readAllMessages', ShowMessages), 
-                                      ('/oneMessage', ShowOneMessage), 
-                                      ('/conversation', ConversationsHandler),
-                                      ('/devtest', DevTestHandler),
+application = webapp.WSGIApplication([
                                       ('/', RedirectToDefaultNavItemHandeler),
-                                      ('/WAYDN',WhatAreYouDoingDevHandler) 
+                                      ('/conversation', ConversationsHandler),
+                                      ('/WAYDN',WhatAreYouDoingDevHandler),
+                                      ('/About',AboutHandler)
+                                      #('/oneMessage', ShowOneMessage), 
+                                      #('/readAllMessages', ShowMessages), 
+                                      #('/devtest', DevTestHandler),
                                       ],
                                      debug=True)
 

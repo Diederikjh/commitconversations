@@ -1,0 +1,14 @@
+{% extends "files/templates/nav-base.html" %}
+
+{% block subtitle %} - About{% endblock %}
+{% block content %}
+{{ super() }}
+      <h2>About
+      </h2>
+      <p>
+      We present Commit Conversations, where the out of context, random commit comments, provide amusement.
+      </p>
+      <p>The commit comments are soured from <a href="http://developer.github.com/v3/" target="blank">GitHub' APIs</a> from 
+      world readable repositories.  A local copy is kept, for faster access.  New commit comments are grabbed evey 5 minutes.</p>
+      <p>Contact us for feedback</p>
+{% endblock %}
