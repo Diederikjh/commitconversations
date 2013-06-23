@@ -1,0 +1,53 @@
+<<<<<<< HEAD
+
+*~
+*.py[co]
+=======
+*.py[cod]
+
+# C extensions
+*.so
+>>>>>>> bcea937d9e06df1381a7f2b9f8e691e76d24c716
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+<<<<<<< HEAD
+=======
+lib
+lib64
+>>>>>>> bcea937d9e06df1381a7f2b9f8e691e76d24c716
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+<<<<<<< HEAD
+
+#Translations
+*.mo
+
+#Mr Developer
+.mr.developer.cfg
+=======
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+>>>>>>> bcea937d9e06df1381a7f2b9f8e691e76d24c716
