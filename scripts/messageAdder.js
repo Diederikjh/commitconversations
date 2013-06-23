@@ -1,9 +1,15 @@
 
 function addRandomCommentToMessageNode(messageNode, stateID) {
-	$.get("/api/1/getOneMessage", function(data, status) {
-		// TODO check status
-		setDataOnNodeAndSaveSate(messageNode, stateID, data)
+	$.ajax({
+		url : "/api/1/getOneMessage",
+		success : function(data, status) {
+			// TODO check status
+			setDataOnNodeAndSaveSate(messageNode, stateID, data)
+		},
+		cache : false,
+		dataType : "json"
 	});
+	// .ajax script is for disable caching
 }
 
 function setCommentByIDToMessageNode(messageNode, insertID, stateID){
@@ -15,14 +21,13 @@ function setCommentByIDToMessageNode(messageNode, insertID, stateID){
 
 function setDataOnNodeAndSaveSate(messageNode, stateID, data)
 {
-	var jsonData = eval('(' + data + ')');
 	var currentState = history.state;
-	messageNode.append(jsonData.message);
+	messageNode.append(data.message);
 
 	if (!currentState) {
 		currentState = new Object();
 	}
-	currentState[stateID] = jsonData.insertCounter
+	currentState[stateID] = data.insertCounter
 	history.replaceState(currentState, "title", "");
 }
 
