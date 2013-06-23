@@ -16,7 +16,7 @@ function setCommentByIDToMessageNode(messageNode, insertID, stateID){
 	$.get("/api/1/getOneMessageById?id="+insertID, function(data, status) {
 		// TODO check status
 		setDataOnNodeAndSaveSate(messageNode, stateID, data)
-	});
+	}, "json");
 }
 
 function setDataOnNodeAndSaveSate(messageNode, stateID, data)
