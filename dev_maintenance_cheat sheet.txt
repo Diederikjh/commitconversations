@@ -1,0 +1,11 @@
+
+
+# debug log for dev server level
+~/apps/google_appengine/dev_appserver.py --log_level=debug ~/workspace/githubconversations/
+
+# git push to server
+git push https://github.com/Diederikjh/commitconversations.git master
+
+# deploy to server
+~/apps/google_appengine/appcfg.py update ~/workspace/githubconversations/
+

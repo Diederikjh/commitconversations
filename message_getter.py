@@ -9,22 +9,10 @@ from model import GitHubCommitComment
 from google.appengine.ext import db
 from modelInterrogator import getMaxIndex
 import logging
+import modelInterrogator
 #  Script to return three random commit comments from github
 ## Depends on http://jacquev6.github.com/PyGithub/introduction.html
 # 
-# final goal is to generate a cartoon with speachbubbles based on these data sets
-#
-#  Title ideas:
-#     git hub converstions
-#     git hub prose   
-#
-#
-#  TODO:
-#    - save commit URL for direct access.
-#    - MAke cron job get x amount of commit messages.
-#    -  Show 3 random messages in a sensable way
-#
-
 class CommitComment:
     message = ""
     sha = ""
@@ -67,11 +55,16 @@ def getMessages():
     
     commentClassList = []
     repoCount = 0
-    commitCount = 0
     # Request ++ per repo
     for repo in pagedRepos:
         pagedCommits = repo.get_commits()
-        repoCount = repoCount + 1
+        repoCountInDb = modelInterrogator.getCountRepo(repo.full_name)
+        commitCount = 0
+        if (repoCountInDb == 0):
+            repoCount = repoCount + 1
+        else:
+            logging.debug("\tContinuing already read repo " +repo.full_name) 
+            continue
         logging.debug("found repo " + repo.full_name)
         try:
             # Request ++ per commit  
@@ -84,7 +77,7 @@ def getMessages():
                     continue
                 s = CommitComment(comment, sha, repo.full_name, ownerName)
                 commitcoment = getExistingComment(sha, repo.full_name, ownerName)
-                logging.debug("\tfound commit comment " + comment)
+                logging.debug("\tfound commit comment " + comment[0:30] + "...")
                 if commitcoment == None:
                     commitcoment = GitHubCommitComment()    
                 # if comment empty - don't save
@@ -105,17 +98,6 @@ def getMessages():
             print(e) 
         if repoCount >= MAX_REPO_COUNT:
             break
-    
-    messages = [];
-    if (len(commentClassList) >= 3):        
-        shuffle(commentClassList)
-        messages.append(commentClassList[0])
-        messages.append(commentClassList[1])
-        messages.append(commentClassList[2])
-        encoding = 'utf-8'
-        print commentClassList[0].message.encode(encoding)
-        print commentClassList[1].message.encode(encoding)
-        print commentClassList[2].message.encode(encoding)
-        return messages
-
+    if commitCount == 0:
+        logging.warn("All repos scanned, none found for commit reading")
     

@@ -64,4 +64,9 @@ def getMessageByInsertId(insertId):
         return getRandomMessage()
     return message
 
+def getCountRepo(repoName):
+    commitMessagesQuery = db.GqlQuery("SELECT * FROM GitHubCommitComment WHERE repo = :1 ", repoName)
+    return commitMessagesQuery.count()
+
+
 
